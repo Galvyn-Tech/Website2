@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galvyn Tech | Project Requirements & Internships</title>
+    <style>
+        :root {
+            --bg-primary: #0f1115;
+            --bg-secondary: #1a1d24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-silver: #e5e7eb;
+            --accent-border: #374151;
+            --btn-hover: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--accent-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .internship-banner {
+            background: rgba(229, 231, 235, 0.05);
+            border: 1px dashed var(--text-muted);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .internship-text {
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .apply-trigger-btn {
+            background: var(--accent-silver);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .apply-trigger-btn:hover {
+            background: var(--btn-hover);
+            transform: translateY(-1px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--accent-border);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--text-muted);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+            padding: 0.85rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--text-main);
+            color: var(--bg-primary);
+        }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-border);
+            width: 100%;
+            max-width: 550px;
+            padding: 2rem;
+            border-radius: 12px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--text-main);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 500px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .internship-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .apply-trigger-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Brand Header -->
+        <div class="header-section">
+            <h1 class="brand-title">Galvyn Tech</h1>
+            <p class="brand-subtitle">Let's build your college project together</p>
+        </div>
+
+        <!-- Internship Context Callout -->
+        <div class="internship-banner">
+            <div class="internship-text">
+                <strong>Looking for practical exposure?</strong> Build real-world skills with our internship tracks.
+            </div>
+            <button class="apply-trigger-btn" id="openModalBtn">Apply Now</button>
+        </div>
+
+        <!-- Primary Form: Project Requirements & Queries -->
+        <form action="https://api.web3forms.com/submit" method="POST">
+            <!-- Web3Forms Config for Requirements Form -->
+            <input type="hidden" name="access_key" value="3901d279-3f64-497b-883e-6dbbadb6befd">
+            <input type="hidden" name="subject" value="New Project Requirement - Galvyn Tech">
+            
+            <div class="form-group">
+                <label for="req-name">Full Name</label>
+                <input type="text" id="req-name" name="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="req-email">Email Address</label>
+                    <input type="email" id="req-email" name="email" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="req-phone">Mobile Number</label>
+                    <input type="tel" id="req-phone" name="phone" placeholder="10-digit mobile" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="req-details">Project Requirements / Queries</label>
+                <textarea id="req-details" name="message" placeholder="Describe the project concept, tech stack preferences, or any questions you have..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Requirements</button>
+        </form>
+    </div>
+
+    <!-- Interactive Internship Application Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            
+            <div class="header-section" style="margin-bottom: 1.5rem;">
+                <h2 class="brand-title" style="font-size: 1.4rem;">Internship Application</h2>
+                <p class="brand-subtitle">Launch your career with Galvyn Tech</p>
+            </div>
+
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <!-- Updated Web3Forms Config for Internship Form -->
+                <input type="hidden" name="access_key" value="2ccfe29b-99ef-47e8-8621-86c69e5b6e00">
+                <input type="hidden" name="subject" value="New Internship Application - Galvyn Tech">
+
+                <div class="form-group">
+                    <label for="intern-name">Full Name</label>
+                    <input type="text" id="intern-name" name="name" required>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="intern-email">Email Address</label>
+                        <input type="email" id="intern-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="intern-phone">Mobile Number</label>
+                        <input type="tel" id="intern-phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="intern-year">Studying Year</label>
+                        <select id="intern-year" name="studying_year" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="intern-branch">Branch</label>
+                        <input type="text" id="intern-branch" name="branch" placeholder="e.g., CSE, IT, ECE" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="intern-college">College Name</label>
+                    <input type="text" id="intern-college" name="college_name" placeholder="Full college name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="intern-domain">Target Domain</label>
+                    <select id="intern-domain" name="domain" required>
+                        <option value="" disabled selected>Select a domain</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="MERN Stack">MERN Stack</option>
+                        <option value=".NET">.NET</option>
+                        <option value="Python Full Stack">Python Full Stack</option>
+                        <option value="Cloud (Claude)">Cloud Technology</option>
+                        <option value="DevOps">DevOps</option>
+                        <option value="Automation Testing">Automation Testing</option>
+                        <option value="Java">Java</option>
+                        <option value="React">React</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" style="background: var(--text-main); color: var(--bg-primary);">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Functionality JavaScript -->
+    <script>
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+
+        openModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
